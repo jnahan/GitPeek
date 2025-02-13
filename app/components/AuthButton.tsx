@@ -8,7 +8,7 @@ const AuthButton = () => {
 
   return (
     <div>
-      {session?.user?.email ? (
+      {session?.user ? (
         <button onClick={() => signOut()}>Sign out</button>
       ) : (
         <button onClick={() => signIn()}>Sign in</button>
