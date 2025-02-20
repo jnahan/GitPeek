@@ -1,82 +1,53 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/options";
-import axios from "axios";
+"use client"
+
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-/**
- * static markup should be rendered on server
- * button rendered on client (for interactivity)
- */
-const RepoList = async () => {
 
-  interface Repo {
-    name: string;
-    clone_url: string;
-    full_name: string;
-    html_url: string;
-    updated_at: string;
-    visibility: string;
-  }
+import { Repo } from "../types/repo";
 
-    const session = await getServerSession(authOptions);
-    let repoNames;
-    
-    if (session) {console.log(session)}
-    else {return}
-    try {
-      // Fetch private repositories using the GitHub API
-      const response = await axios.get("https://api.github.com/user/repos", {
-        headers: {
-          Authorization: `Bearer ${session.accessToken}`,
-        },
-        params: {
-          // visibility: "private", // Retrieve private repositories
-          affiliation: "owner", // Optional: Get repos that the user owns or collaborates on
-        },
-      });
+const RepoList = () => {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
 
-      const repos = response.data; // Type the response data as Repo[]
-      repoNames = repos.map((repo: Repo) => ({
-        name: repo.name,
-        clone_url: repo.clone_url,
-        full_name: repo.full_name,
-        html_url: repo.html_url,
-        updated_at: repo.updated_at,
-        visibility: repo.visibility,
-      })); // Extract necessary information
+  useEffect(() => {
+    async function fetchRepos(id: string) {
+      const res = await fetch(`http://localhost:3000/api/repos/${id}`);
+      const repos: Repo[] = await res.json();
+      setRepos(repos)
+    }  
 
-      console.log("Repository Names:", repoNames); // Log repository names
-    } catch (error) {
-      console.error("Error fetching repositories:", error);
-      
+    if (id) {
+      fetchRepos(id);
     }
+  }, [id]);
 
+  const [repos, setRepos] = useState<Repo[] | null>(null);
+  console.log(repos)
 
+  // error handling
   return (
     <div>
-      <ul>
-        {repoNames && repoNames.map((repo: Repo) => {
-          return (
-            <ul key={repo.name} className="flex gap-2 items-center">
-              <li className="font-bold">{repo.name}</li>
-              <li>{repo.visibility}</li>
-              <li>{repo.html_url}</li>
-              <Link
-                className="bg-white text-black px-2 py-1 rounded-sm text-xs"
-                href={{
-                  pathname: "/deploy",
-                  query: {
-                    name: repo.name,
-                  },
-                }}
-              >
-                Deploy
-              </Link>
-              <br />
-              <br />
-            </ul>
-          );
-        })}
-      </ul>
+      {repos?.map((repo) => (
+        <div key={repo.name}>
+          <p>{repo.name}</p>
+          <li>{repo.clone_url}</li>
+          <li>{repo.full_name}</li>
+          <li>{repo.html_url}</li>
+          <li>{repo.updated_at}</li>
+          <Link
+            className="underline"
+            href={{
+              pathname: "/content",
+              query: { id: id, repo: repo.name, owner: repo.owner.login },
+            }}
+          >
+            content
+          </Link>{" "}
+          <br />
+          <br />
+        </div>
+      ))}
     </div>
   );
 };
