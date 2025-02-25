@@ -5,10 +5,14 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { RefreshCwIcon } from "lucide-react";
 import NavBar from "@/app/components/NavBar";
+// import { useSession } from "next-auth/react";
 
-const ImportPage = ({params} : {
-  params: { id: string }
-}) => {
+const ImportPage = async ({ params }: { params: { id: string } }) => {
+  // const { data: session } = useSession();
+
+  const { id } = await params;
+  console.log(id);
+
   return (
     <div>
       <NavBar />
@@ -20,6 +24,12 @@ const ImportPage = ({params} : {
           <p>We will generate a read-only repository for this project</p>
         </div>
         <div className="flex flex-col gap-4 max-w-lg w-full px-6 py-8 border border-zinc-200 rounded-sm">
+          <a
+            href="https://github.com/apps/gitlink-dev/installations/new"
+            target="_blank"
+          >
+            Authorize
+          </a>
           <div className="flex flex-row justify-between">
             <div className="flex flex-row gap-3 self-center">
               <Image
@@ -28,7 +38,7 @@ const ImportPage = ({params} : {
                 height={24}
                 alt="GitHub mark"
               />
-              <p>Username</p>
+              {/* <p>{session?.user.name}</p> */}
             </div>
             <Button variant="ghost">
               <RefreshCwIcon size={12} />
@@ -36,7 +46,7 @@ const ImportPage = ({params} : {
             </Button>
           </div>
           <Input type="text" placeholder="Search private repository" />
-          <RepoList id={params.id} />
+          {id != "new" && <RepoList id={id} />}
         </div>
       </div>
     </div>

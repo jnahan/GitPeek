@@ -14,8 +14,6 @@ function SignUpPage() {
   useEffect(() => {
     console.log("session")
     console.log(session)
-      // redirect(`/import/${session.accessToken}`)
-
   }, [session])
 
   return (
@@ -32,14 +30,14 @@ function SignUpPage() {
           <h1 className="text-2xl font-semibold mb-2">Welcome to GitPeek</h1>
           <p>Sign in to share your private GitHub repos</p>
         </div>
-        <Button onClick={() => signIn("github")}>
+        <Button onClick={() => signIn("github", { callbackUrl: "/import/new" })}>
           <Image
             src="/github-mark-white.svg"
             width={16}
             height={16}
             alt="GitHub Mark"
           />
-            Sign in with GitHub
+          Sign in with GitHub
         </Button>
         <AuthButton />
         <p className="max-w-sm">

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Repo, ErrorRepo } from "../types/repo";
+import { Repo } from "../types/repo";
 import { Button } from "@/components/ui/button";
 import { CodeIcon, RefreshCwIcon } from "lucide-react";
 
@@ -8,13 +8,13 @@ interface IRepoList {
 }
 
 const RepoList = async ({id} : IRepoList) => {
-  let repos: Repo[] | ErrorRepo = [];
+  let repos: Repo[] = [];
 
   async function fetchRepos(id: string) {
     try {
-      const res = await fetch(`http://localhost:3000/api/repos/${id}`);
+      const res = await fetch(`http://localhost:3000/api/repos?id=${id}`);
       const json = await res.json();
-      if (!json.error){
+      if (!json.error && Array.isArray(json)){
         repos = json;
       }
     }
@@ -22,7 +22,10 @@ const RepoList = async ({id} : IRepoList) => {
       console.error("Error fetching repos:", error);
     }
   }
-  await fetchRepos(id);
+  console.log(id)
+  if (id) {
+    await fetchRepos(id);
+  }
 
   // error handling
   return (
