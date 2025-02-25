@@ -13,6 +13,6 @@ export async function GET(req: NextRequest) {
   }
 
   return NextResponse.redirect(
-    `http://localhost:3000/repos?id=${installation_id}`
+    `http://localhost:3000/import/${installation_id}`
   );
 }

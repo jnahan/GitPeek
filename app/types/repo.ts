@@ -11,3 +11,7 @@ export interface Repo {
     login: string;
   };
 }
+
+export interface ErrorRepo {
+  error: string;
+}

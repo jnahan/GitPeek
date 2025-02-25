@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation';
 import { RepoContent } from '../types/content';
+import NavBar from '../components/NavBar';
 
 function ContentPage() {
   const searchParams = useSearchParams();
@@ -27,6 +28,7 @@ function ContentPage() {
   
   return (
     <div>
+      <NavBar />
       {repoContent && repoContent.map((repo)=>(
         <div key={repo.name}>
           <p>{repo.name}</p>
