@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import NavBar from "./components/NavBar";
-import { ArrowRight, LockIcon, RefreshCwIcon, Settings, SettingsIcon, SmileIcon } from "lucide-react";
+import { ArrowRight, LockIcon, RefreshCwIcon, SettingsIcon, SmileIcon } from "lucide-react";
 
 export default function Home() {  
   return (

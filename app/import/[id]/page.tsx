@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { RefreshCwIcon } from "lucide-react";
 import NavBar from "@/app/components/NavBar";
-import { SearchIcon } from "lucide-react";
 
 const ImportPage = ({params} : {
   params: { id: string }
