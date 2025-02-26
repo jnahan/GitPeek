@@ -1,31 +1,51 @@
+"use client"
+
 import Link from "next/link";
 import { Repo } from "../types/repo";
 import { Button } from "@/components/ui/button";
 import { CodeIcon, RefreshCwIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface IRepoList {
   id: string;
+  searchParam: string;
+  refresh: boolean;
+  setRefresh: (refresh: boolean) => void;
 }
 
-const RepoList = async ({id} : IRepoList) => {
-  let repos: Repo[] = [];
+const RepoList = ({id, searchParam, refresh, setRefresh} : IRepoList) => {
+  const [repos, setRepos] = useState<Repo []>([]);
+  const [filteredRepos, setFilteredRepos] = useState<Repo []>([]);
 
   async function fetchRepos(id: string) {
     try {
       const res = await fetch(`http://localhost:3000/api/repos?id=${id}`);
       const json = await res.json();
       if (!json.error && Array.isArray(json)){
-        repos = json;
+        setRepos(json);
       }
     }
     catch (error) {
       console.error("Error fetching repos:", error);
     }
   }
-  console.log(id)
-  if (id) {
-    await fetchRepos(id);
-  }
+
+  useEffect(()=>{
+    if (id) {
+      fetchRepos(id);
+      setRefresh(false);
+      console.log("refreshing")
+    }
+  }, [id, refresh])
+
+  useEffect(()=>{
+    if (searchParam == ""){
+      setFilteredRepos(repos)
+    }
+    if (searchParam != ""){
+      setFilteredRepos(repos.filter((repo) => repo.name.includes(searchParam.toLowerCase())))
+    }
+  }, [repos, searchParam])
 
   // error handling
   return (
@@ -44,7 +64,7 @@ const RepoList = async ({id} : IRepoList) => {
         </div>
       ) : (
         <ul className="max-h-64 overflow-y-scroll">
-          {repos.map((repo) => (
+          {filteredRepos.map((repo) => (
             <li
               className="flex flex-row gap-3 px-3 py-2 items-center justify-between"
               key={repo.name}

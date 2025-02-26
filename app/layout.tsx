@@ -11,6 +11,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "GitPeek",
   description: "Secure read-only links for your private Git repositories",
+  icons: {
+    icon: "/gitpeek-logo.svg",
+  }
 };
 
 export default async function RootLayout({

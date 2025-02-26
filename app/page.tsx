@@ -68,11 +68,12 @@ export default function Home() {
             <h2 className="text-2xl font-bold mb-4">
               Publish your repository in seconds
             </h2>
-            <p>
-              Not sure who you’re sharing with? Need a simple way to showcase
-              your work? Easily grant view-only access without worrying about
-              unwanted changes.
-            </p>
+            <ol className="flex flex-col gap-4">
+              <li>Choose private repository</li>
+              <li>Configure permissions</li>
+              <li>Deploy project</li>
+              <li>Share link</li>
+            </ol>
           </div>
           <div className="h-80 w-1/2 bg-gray-400 rounded-md">.</div>
         </section>

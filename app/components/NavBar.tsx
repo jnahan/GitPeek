@@ -8,9 +8,10 @@ import Image from "next/image";
 
 import { useSession, signOut } from "next-auth/react";
 
-
 function NavBar() {
   const { data: session } = useSession();
+  console.log("session from navbar")
+  console.log(session)
   
   return (
     <header className="px-28 py-8 mb-8">
@@ -27,7 +28,9 @@ function NavBar() {
         {session?.user?.email ? (
           <div className="flex flex-row gap-3">
             <Button variant={"secondary"}>My Repos</Button>
-            <Button>Add Repo</Button>
+            <Button>
+              <Link href={"/import/new"}>Add Repo</Link>
+            </Button>
             <Avatar className="cursor-pointer" onClick={() => signOut()}>
               <AvatarImage src={session.user.image || ""} />
               <AvatarFallback>GL</AvatarFallback>
