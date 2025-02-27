@@ -11,10 +11,9 @@ interface Params {
   repo: string;
 }
 
-export async function GET(req: NextRequest, { params }: { params: Params }) {
-  const INSTALLATION_ID = parseInt(params.id, 10);
-  const owner = params.owner;
-  const repo = params.repo;
+export async function GET(req: NextRequest, res: NextResponse, { params }: { params: Params }) {
+  const { id, owner, repo } = await params
+  const INSTALLATION_ID = parseInt(id, 10);
 
   try {
     const octokit = await getOctokit(INSTALLATION_ID);

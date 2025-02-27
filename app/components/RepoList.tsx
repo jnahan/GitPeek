@@ -36,7 +36,7 @@ const RepoList = ({id, searchParam, refresh, setRefresh} : IRepoList) => {
       setRefresh(false);
       console.log("refreshing")
     }
-  }, [id, refresh])
+  }, [id, refresh, setRefresh])
 
   useEffect(()=>{
     if (searchParam == ""){
@@ -77,9 +77,8 @@ const RepoList = ({id, searchParam, refresh, setRefresh} : IRepoList) => {
               <Button variant="secondary">
                 <Link
                   href={{
-                    pathname: "/content",
-                    // pathname: `/configure/${id}`,
-                    query: { id: id, repo: repo.name, owner: repo.owner.login },
+                    pathname: `/configure/${id}`,
+                    query: { repo: repo.name, owner: repo.owner.login },
                   }}
                 >
                   Import

@@ -1,11 +1,13 @@
 "use client"
+// look into suspense
 
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation';
 import { RepoContent } from '../types/content';
 import NavBar from '../components/NavBar';
+import { Suspense } from 'react';
 
-function ContentPage() {
+function ContentPageInner() {
   const searchParams = useSearchParams();
   const repo = searchParams.get("repo");
   const owner = searchParams.get("owner");
@@ -38,6 +40,14 @@ function ContentPage() {
       ))}
     </div>
   )
+}
+
+function ContentPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ContentPageInner />
+    </Suspense>
+  );
 }
 
 export default ContentPage;
