@@ -1,10 +1,6 @@
 "use server";
 
 import { PrismaClient } from "@prisma/client";
-import { revalidatePath } from "next/cache";
-
-// TODO: add validation to check if user already exists
-// TODO: remove revalidate path
 
 const prisma = new PrismaClient();
 
@@ -22,6 +18,18 @@ export default async function addUser(
   avatar: string,
 ) {
   try {
+    // check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email,
+        username,
+      },
+    });
+    if (existingUser) {
+      console.log("User already exists", existingUser);
+    }
+
+    // if new user, create user
     const user = await prisma.user.create({
       data: {
         username,
@@ -29,8 +37,7 @@ export default async function addUser(
         avatar,
       },
     });
-    console.log("Sucessfully created user", username);
-    revalidatePath("/");
+    console.log("Sucessfully created user", user);
 
     return user;
   } catch (e) {
