@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import RepoList from "../../components/RepoList";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -11,6 +11,8 @@ import SearchBar from "@/app/components/SearchBar";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { use } from "react";
+import addUser from "@/app/actions/addUser";
+import addIId from "@/app/actions/addIId";
 
 /*
   try fetching preexisting id
@@ -27,13 +29,57 @@ const ImportPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
   const [searchParam, setSearchParam] = useState("");
 
+  console.log("session");
+  console.log(session);
+
   // TODO: REFACTOR
 
   const [refresh, setRefresh] = useState(false);
 
+  // TODO USER ID SHOULD INSTEAD BE FETCHED FROM DATABASE AND INTO SESSINOS
+  const [userId, setUserId] = useState<number | null>(null);
+
   // TODO: attempt to fetch installation id instead of hard coidng
   let installation_id = "";
   installation_id = "61674356";
+
+  useEffect(() => {
+    if (session?.user) {
+      const checkAndAddUser = async () => {
+        try {
+          // const res = await fetch(`/api/getUser?email=${session.user.email}`);
+          // const user = await res.json();
+
+          // if (!user) {
+          if (true) {
+            const user = await addUser(
+              session.user.name || "",
+              session.user.email || "",
+              session.user.image || "",
+            );
+            if (user) {
+              setUserId(user.id);
+              console.log("user returned is", user);
+            }
+          }
+        } catch (error) {
+          console.error("Error checking/creating user:", error);
+        }
+      };
+      checkAndAddUser();
+    }
+  }, [session]);
+
+  useEffect(() => {
+    const checkAndAddIid = async () => {
+      if (userId && installation_id) {
+        const res = await addIId(userId, installation_id);
+        console.log("added installation id");
+        console.log(res);
+      }
+    };
+    checkAndAddIid();
+  }, [installation_id, userId]);
 
   return (
     <div>
@@ -57,12 +103,17 @@ const ImportPage = ({ params }: { params: Promise<{ id: string }> }) => {
               />
               <p className="text-sm">{session?.user.name}</p>
             </div>
-            <Button variant="ghost" onClick={()=>{setRefresh(true)}}>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setRefresh(true);
+              }}
+            >
               <RefreshCwIcon size={12} />
               Refresh
             </Button>
           </div>
-          <SearchBar 
+          <SearchBar
             placeholder="Search private repository"
             value={searchParam}
             setValue={setSearchParam}
@@ -84,13 +135,14 @@ const ImportPage = ({ params }: { params: Promise<{ id: string }> }) => {
               </Button>
             </div>
           ) : (
-            installation_id && 
-            <RepoList 
-              id={installation_id || id} 
-              searchParam={searchParam}
-              refresh={refresh}
-              setRefresh={setRefresh}
-            />
+            installation_id && (
+              <RepoList
+                id={installation_id || id}
+                searchParam={searchParam}
+                refresh={refresh}
+                setRefresh={setRefresh}
+              />
+            )
           )}
         </div>
       </div>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -10,9 +10,9 @@ import { useSession, signOut } from "next-auth/react";
 
 function NavBar() {
   const { data: session } = useSession();
-  console.log("session from navbar")
-  console.log(session)
-  
+  console.log("session from navbar");
+  console.log(session);
+
   return (
     <header className="px-28 py-8 mb-8">
       <nav className="flex flex-row justify-between">
@@ -27,7 +27,7 @@ function NavBar() {
         </Link>
         {session?.user?.email ? (
           <div className="flex flex-row gap-3">
-            <Button variant={"secondary"}>My Repos</Button>
+            <Button variant={"secondary"}>Dashboard</Button>
             <Button>
               <Link href={"/import/new"}>Add Repo</Link>
             </Button>

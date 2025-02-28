@@ -1,10 +1,15 @@
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import NavBar from "./components/NavBar";
-import { ArrowRight, LockIcon, RefreshCwIcon, SettingsIcon, SmileIcon } from "lucide-react";
+import {
+  ArrowRight,
+  LockIcon,
+  RefreshCwIcon,
+  SettingsIcon,
+  SmileIcon,
+} from "lucide-react";
 
-export default function Home() {  
+export default function Home() {
   return (
     <div>
       <NavBar />
@@ -91,7 +96,7 @@ export default function Home() {
         </section>
       </div>
       <footer className="flex flex-row justify-between px-28 py-8 mt-28">
-        <p>© gitlink 2025</p>
+        <p>© GitPeek 2025</p>
         <div className="flex flex-row gap-4">
           <Link href={""}>Terms of service</Link>
           <Link href={""}>Privacy policy</Link>

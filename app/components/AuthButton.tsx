@@ -11,7 +11,11 @@ const AuthButton = () => {
       {session?.user?.email ? (
         <button onClick={() => signOut()}>Sign out</button>
       ) : (
-        <button onClick={() => signIn("github", {callbackUrl: "/confirmation"})}>Sign in</button>
+        <button
+          onClick={() => signIn("github", { callbackUrl: "/confirmation" })}
+        >
+          Sign in
+        </button>
       )}
     </div>
   );

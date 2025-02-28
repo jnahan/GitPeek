@@ -1,11 +1,11 @@
-import React from 'react';
-import { SearchIcon } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import React from "react";
+import { SearchIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface ISearchBar {
   placeholder: string;
   value: string;
-  setValue: (value: string) => void
+  setValue: (value: string) => void;
 }
 function SearchBar({ placeholder, value, setValue }: ISearchBar) {
   return (
@@ -15,10 +15,12 @@ function SearchBar({ placeholder, value, setValue }: ISearchBar) {
         className="pl-8"
         placeholder={placeholder}
         value={value}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setValue(e.target.value)
+        }
       />
     </div>
   );
 }
 
-export default SearchBar
+export default SearchBar;

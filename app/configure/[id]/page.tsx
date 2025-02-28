@@ -1,7 +1,7 @@
-"use client"
-import React from 'react'
-import { Button } from '@/components/ui/button'
-import NavBar from '@/app/components/NavBar'
+"use client";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import NavBar from "@/app/components/NavBar";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -15,9 +15,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Switch } from '@/components/ui/switch';
-import Link from 'next/link';
-import { use } from 'react';
+import { Switch } from "@/components/ui/switch";
+import Link from "next/link";
+import { use } from "react";
 import { useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
@@ -29,7 +29,7 @@ function ConfigurePage({ params }: { params: Promise<{ id: string }> }) {
   const searchParams = useSearchParams();
   const repo = searchParams.get("repo");
   const owner = searchParams.get("owner");
-  const { id } = use(params)
+  const { id } = use(params);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -109,4 +109,4 @@ function ConfigurePage({ params }: { params: Promise<{ id: string }> }) {
   );
 }
 
-export default ConfigurePage
+export default ConfigurePage;

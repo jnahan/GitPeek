@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { Repo } from "../types/repo";
@@ -13,39 +13,40 @@ interface IRepoList {
   setRefresh: (refresh: boolean) => void;
 }
 
-const RepoList = ({id, searchParam, refresh, setRefresh} : IRepoList) => {
-  const [repos, setRepos] = useState<Repo []>([]);
-  const [filteredRepos, setFilteredRepos] = useState<Repo []>([]);
+const RepoList = ({ id, searchParam, refresh, setRefresh }: IRepoList) => {
+  const [repos, setRepos] = useState<Repo[]>([]);
+  const [filteredRepos, setFilteredRepos] = useState<Repo[]>([]);
 
   async function fetchRepos(id: string) {
     try {
       const res = await fetch(`http://localhost:3000/api/repos?id=${id}`);
       const json = await res.json();
-      if (!json.error && Array.isArray(json)){
+      if (!json.error && Array.isArray(json)) {
         setRepos(json);
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error fetching repos:", error);
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (id) {
       fetchRepos(id);
       setRefresh(false);
-      console.log("refreshing")
+      console.log("refreshing");
     }
-  }, [id, refresh, setRefresh])
+  }, [id, refresh, setRefresh]);
 
-  useEffect(()=>{
-    if (searchParam == ""){
-      setFilteredRepos(repos)
+  useEffect(() => {
+    if (searchParam == "") {
+      setFilteredRepos(repos);
     }
-    if (searchParam != ""){
-      setFilteredRepos(repos.filter((repo) => repo.name.includes(searchParam.toLowerCase())))
+    if (searchParam != "") {
+      setFilteredRepos(
+        repos.filter((repo) => repo.name.includes(searchParam.toLowerCase())),
+      );
     }
-  }, [repos, searchParam])
+  }, [repos, searchParam]);
 
   // error handling
   return (
