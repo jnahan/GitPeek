@@ -79,7 +79,12 @@ const RepoList = ({ id, searchParam, refresh, setRefresh }: IRepoList) => {
                 <Link
                   href={{
                     pathname: `/configure/${id}`,
-                    query: { repo: repo.name, owner: repo.owner.login },
+                    query: {
+                      repo: repo.name,
+                      gitHubUrl: repo.html_url,
+                      cloneUrl: repo.clone_url,
+                      owner: repo.owner.login,
+                    },
                   }}
                 >
                   Import

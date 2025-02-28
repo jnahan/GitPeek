@@ -18,7 +18,7 @@ export default async function addUser(
   avatar: string,
 ) {
   try {
-    // check if user already exists
+    // Check if user already exists
     const existingUser = await prisma.user.findUnique({
       where: {
         email,
@@ -29,7 +29,7 @@ export default async function addUser(
       console.log("User already exists", existingUser);
     }
 
-    // if new user, create user
+    // If new user, create user
     const user = await prisma.user.create({
       data: {
         username,

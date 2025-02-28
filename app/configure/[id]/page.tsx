@@ -19,32 +19,60 @@ import { Switch } from "@/components/ui/switch";
 import Link from "next/link";
 import { use } from "react";
 import { useSearchParams } from "next/navigation";
+import addRepo from "@/app/actions/addRepo";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation"; // For navigation
 
 const formSchema = z.object({
-  projectName: z.string().min(3).max(32),
-  allowCloning: z.boolean(),
+  name: z
+    .string()
+    .min(0)
+    .max(100)
+    .regex(
+      /^[a-z0-9-_\.]+$/,
+      "Project name must be lowercase and can contain alphanumeric characters, hyphens, dots, and underscores",
+    ),
+  cloneable: z.boolean(),
 });
 
 function ConfigurePage({ params }: { params: Promise<{ id: string }> }) {
   const searchParams = useSearchParams();
+
+  // TODO FETCH INSTEAD OF PASSING W URL
   const repo = searchParams.get("repo");
   const owner = searchParams.get("owner");
+  const gitHubUrl = searchParams.get("gitHubUrl");
+  const cloneUrl = searchParams.get("cloneUrl");
   const { id } = use(params);
 
-  // 1. Define your form.
+  const router = useRouter();
+
+  // Define form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      projectName: repo || "",
-      allowCloning: false,
+      name: repo || "",
+      cloneable: false,
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const { data: session } = useSession();
+
+  // Define submit handler
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Explicitly type newRepo to omit 'id' and 'gitPeekUrl'
+    const newRepo = {
+      name: values.name,
+      gitHubUrl: gitHubUrl || "",
+      cloneable: values.cloneable,
+      cloneUrl: cloneUrl || "",
+      userId: session?.user.id ?? 0,
+      username: owner || "",
+    };
+    const res = await addRepo(newRepo);
+    if (res?.success) {
+      router.push(`/confirmation`);
+    }
   }
 
   return (
@@ -60,7 +88,7 @@ function ConfigurePage({ params }: { params: Promise<{ id: string }> }) {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
-                name="projectName"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-bold">Project name</FormLabel>
@@ -73,7 +101,7 @@ function ConfigurePage({ params }: { params: Promise<{ id: string }> }) {
               />
               <FormField
                 control={form.control}
-                name="allowCloning"
+                name="cloneable"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
                     <div className="space-y-0.5">

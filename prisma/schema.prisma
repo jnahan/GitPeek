@@ -21,11 +21,14 @@ model User {
 model Repo {
   id            Int    @id @default(autoincrement())
   name          String
-  gitPeekUrl    String
-  githubUrl     String
+  gitPeekUrl    String?
+  gitHubUrl     String
   cloneable     Boolean
+  cloneUrl      String
   userId        Int
-  user          User   @relation("UserRepos", fields: [userId], references: [id])
+  username      String
+  user          User?  @relation("UserRepos", fields: [userId], references: [id])
 
-  @@index([userId])  // Add an index for faster lookups by userId
+  @@index([userId])    // Add an index for faster lookups by userId
+  @@unique([userId, name])  // Ensuring that name is unique per User
 }
