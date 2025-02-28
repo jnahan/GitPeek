@@ -1,5 +1,7 @@
 "use client";
 
+// SHOULD BE UPDATED TO ONLY INCLUDE REPOS THAT HAS YET TO BEEN PUBLISHED
+
 import Link from "next/link";
 import { Repo } from "../types/repo";
 import { Button } from "@/components/ui/button";
