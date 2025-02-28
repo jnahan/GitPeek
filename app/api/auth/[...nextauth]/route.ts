@@ -1,3 +1,5 @@
+// Sets up Next Auth handler
+
 import NextAuth from "next-auth";
 import { authOptions } from "./options";
 

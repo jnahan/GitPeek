@@ -1,10 +1,10 @@
-"use client"
+"use client";
 export const dynamic = "force-dynamic";
 
-import React from 'react'
-import { Button } from '@/components/ui/button'
-import Image from 'next/image';
-import { signIn } from 'next-auth/react';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { signIn } from "next-auth/react";
 
 function SignUpPage() {
   return (
@@ -21,7 +21,9 @@ function SignUpPage() {
           <h1 className="text-2xl font-semibold mb-2">Welcome to GitPeek</h1>
           <p>Sign in to share your private GitHub repos</p>
         </div>
-        <Button onClick={() => signIn("github", { callbackUrl: "/import/new" })}>
+        <Button
+          onClick={() => signIn("github", { callbackUrl: "/import/new" })}
+        >
           <Image
             src="/github-mark-white.svg"
             width={16}
@@ -39,4 +41,4 @@ function SignUpPage() {
   );
 }
 
-export default SignUpPage
+export default SignUpPage;

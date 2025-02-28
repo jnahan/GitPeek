@@ -8,6 +8,14 @@ import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();
 
+/**
+ * Adds new user object to database
+ *
+ * @param username - GitHub username
+ * @param email - Email
+ * @param avatar - Avatar
+ * @returns Created user object
+ */
 export default async function addUser(
   username: string,
   email: string,
@@ -19,9 +27,6 @@ export default async function addUser(
         username,
         email,
         avatar,
-      },
-      select: {
-        id: true,
       },
     });
     console.log("Sucessfully created user", username);

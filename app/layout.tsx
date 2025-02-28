@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "Secure read-only links for your private Git repositories",
   icons: {
     icon: "/gitpeek-logo.svg",
-  }
+  },
 };
 
 export default async function RootLayout({
@@ -21,13 +21,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <Provider>
       <html lang="en">
-        <body className={`${geistMono.variable} antialiased`}>
-          {children}
-        </body>
+        <body className={`${geistMono.variable} antialiased`}>{children}</body>
       </html>
     </Provider>
   );

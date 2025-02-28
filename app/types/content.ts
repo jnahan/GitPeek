@@ -1,5 +1,5 @@
 export interface RepoContent {
-  name: string,
-  type: string,
-  path: string
+  name: string;
+  type: string;
+  path: string;
 }
